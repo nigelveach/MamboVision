@@ -4,12 +4,12 @@ This library aims to develop an object-avoidance system using the FPV camera of 
 
 ## Completed
 
--pyparrot library implemented
--programming capability of the drone achieved
--video streaming to laptop achieved in both VLC and ffmpeg formats
+- pyparrot library implemented
+- programming capability of the drone achieved
+- video streaming to laptop achieved in both VLC and ffmpeg formats
 
 ## To-Do
 
--fix VLC bug
--determine best and easiest way to achieve object avoidance
--determine best format for receiving video stream (opencv, VLC, ffmpeg, etc)
+- fix VLC bug
+- determine best and easiest way to achieve object avoidance
+- determine best format for receiving video stream (opencv, VLC, ffmpeg, etc)
