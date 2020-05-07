@@ -41,19 +41,19 @@ def fly(stdscr):
 
                 elif c == ord('d'):
                     stdscr.addstr("yaw right")
-                    mambo.fly_direct(roll=0, pitch=0, yaw=20, vertical_movement=0)
+                    mambo.fly_direct(roll=0, pitch=0, yaw=40, vertical_movement=0)
 
                 elif c == ord('a'):
                     stdscr.addstr("yaw left")
-                    mambo.fly_direct(roll=0, pitch=0, yaw=-20, vertical_movement=0)
+                    mambo.fly_direct(roll=0, pitch=0, yaw=-40, vertical_movement=0)
 
                 elif c == ord('r'):
                     stdscr.addstr("rise")
-                    mambo.fly_direct(roll=0, pitch=0, yaw=0, vertical_movement=20)
+                    mambo.fly_direct(roll=0, pitch=0, yaw=0, vertical_movement=15)
 
                 elif c == ord('f'):
                     stdscr.addstr("fall")
-                    mambo.fly_direct(roll=0, pitch=0, yaw=0, vertical_movement=-20)
+                    mambo.fly_direct(roll=0, pitch=0, yaw=0, vertical_movement=-15)
 
                 else:
                     stdscr.addstr("key not recognized")
