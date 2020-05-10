@@ -35,10 +35,6 @@ def fly(stdscr):
                     stdscr.addstr("forward")
                     mambo.fly_direct(roll=0, pitch=20, yaw=0, vertical_movement=0)
 
-                elif c == ord('s'):
-                    stdscr.addstr("backward")
-                    mambo.fly_direct(roll=0, pitch=-20, yaw=0, vertical_movement=0)
-
                 elif c == ord('d'):
                     stdscr.addstr("yaw right")
                     mambo.fly_direct(roll=0, pitch=0, yaw=40, vertical_movement=0)
