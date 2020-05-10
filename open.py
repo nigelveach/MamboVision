@@ -1,8 +1,9 @@
 """
-Demo of the ffmpeg based mambo vision code (basically flies around and saves out photos as it flies)
+Test of the opencv based mambo vision code
 
-Author: Amy McGovern
+Author: Nigel Veach
 """
+
 from pyparrot.Minidrone import Mambo
 from pyparrot.DroneVision import DroneVision
 from pyparrot.Model import Model
@@ -10,28 +11,12 @@ from pyparrot.Model import Model
 import threading
 import cv2
 import time
+import numpy as np
+import cv2
+import os
 
-# set this to true if you want to fly for the demo
-testFlying = False
+os.environ["OPENCV_FFMPEG_CAPTURE_OPTIONS"] = 'protocol_whitelist;file,rtp,udp | fflags;nobuffer | flag;low_delay'
 
-
-class UserVision:
-    def __init__(self, vision):
-        self.index = 0
-        self.vision = vision
-
-    def save_pictures(self, args):
-        print("in save pictures on image %d " % self.index)
-
-        img = self.vision.get_latest_valid_picture()
-
-        if (img is not None):
-            filename = "test_image_%06d.png" % self.index
-            cv2.imwrite(filename, img)
-            self.index +=1
-            #print(self.index)
-
-# you will need to change this to the address of YOUR mambo
 mamboAddr = "DC-71-96-21-9C-E7"
 
 # make my mambo object
@@ -40,53 +25,25 @@ mambo = Mambo(mamboAddr, use_wifi=True)
 print("trying to connect to mambo now")
 success = mambo.connect(num_retries=3)
 print("connected: %s" % success)
+time.sleep(2)
+mambo.fps = 30
 
-if (success):
-    # get the state information
-    print("sleeping")
-    mambo.smart_sleep(1)
-    mambo.ask_for_state_update()
-    mambo.smart_sleep(1)
 
-    print("Preparing to open vision")
-    mamboVision = DroneVision(mambo, Model.MAMBO, buffer_size=30)
-    userVision = UserVision(mamboVision)
-    mamboVision.set_user_callback_function(userVision.save_pictures, user_callback_args=None)
-    success = mamboVision.open_video()
-    print("Success in opening vision is %s" % success)
+cap = cv2.VideoCapture("rtsp://192.168.99.1/media/stream2", cv2.CAP_FFMPEG)
 
-    if (success):
-        print("Vision successfully started!")
-        #removed the user call to this function (it now happens in open_video())
-        #mamboVision.start_video_buffering()
+ret, frame = cap.read()
+print(ret);
 
-        if (testFlying):
-            print("taking off!")
-            mambo.safe_takeoff(5)
+while ret:
+    cv2.imshow('frame', frame)
+    # do other processing on frame...
 
-            if (mambo.sensors.flying_state != "emergency"):
-                print("flying state is %s" % mambo.sensors.flying_state)
-                print("Flying direct: going up")
-                mambo.fly_direct(roll=0, pitch=0, yaw=0, vertical_movement=20, duration=1)
+    ret, frame = cap.read()
+    if (cv2.waitKey(1) & 0xFF == ord('q')):
+        break
 
-                print("flip left")
-                print("flying state is %s" % mambo.sensors.flying_state)
-                success = mambo.flip(direction="left")
-                print("mambo flip result %s" % success)
-                mambo.smart_sleep(5)
-
-            print("landing")
-            print("flying state is %s" % mambo.sensors.flying_state)
-            mambo.safe_land(5)
-        else:
-            print("Sleeeping for 15 seconds - move the mambo around")
-            mambo.smart_sleep(15)
-
-        # done doing vision demo
-        print("Ending the sleep and vision")
-        mamboVision.close_video()
-
-        mambo.smart_sleep(5)
-
-    print("disconnecting")
-    mambo.disconnect()
+cap.release()
+cv2.destroyAllWindows()
+mambo.disconnect()
+print("disconnect")
+# When everything done, release the capture
