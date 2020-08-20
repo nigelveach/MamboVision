@@ -6,7 +6,7 @@ Author: Nigel Veach
 
 from pyparrot.Minidrone import Mambo
 from pyparrot.DroneVision import DroneVision
-from pyparrot.Model import Model
+# from pyparrot.Model import Model
 
 import threading
 import cv2
@@ -15,7 +15,7 @@ import numpy as np
 import cv2
 import os
 
-os.environ["OPENCV_FFMPEG_CAPTURE_OPTIONS"] = 'protocol_whitelist;file,rtp,udp | fflags;nobuffer | flag;low_delay'
+os.environ["OPENCV_FFMPEG_CAPTURE_OPTIONS"] = 'protocol_whitelist;file,tcp,rtp,udp | fflags;nobuffer | flag;low_delay'
 
 mamboAddr = "DC-71-96-21-9C-E7"
 

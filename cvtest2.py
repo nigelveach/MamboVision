@@ -8,7 +8,7 @@ import numpy as np
 import cv2
 import os
 
-os.environ["OPENCV_FFMPEG_CAPTURE_OPTIONS"] = 'protocol_whitelist;file,rtp,udp | fflags;nobuffer | flag;low_delay'
+os.environ["OPENCV_FFMPEG_CAPTURE_OPTIONS"] = 'protocol_whitelist;file,tcp,rtp,udp | fflags;nobuffer | flag;low_delay'
 mamboAddr = "DC-71-96-21-9C-E7"
 
 
@@ -140,7 +140,7 @@ if __name__ == '__main__':
     print("trying to connect to mambo now")
     success = mambo.connect(num_retries=3)
     print("connected: %s" % success)
-    mambo.SetResolution()
+    # mambo.SetResolution()
 
     time.sleep(2)
 
